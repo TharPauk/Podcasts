@@ -29,15 +29,15 @@ class MainTabBarController: UITabBarController {
     
     private func setupViewControllers() {
         viewControllers = [
+            createNavigationController(for: PodcastsSearchController(), title: "Search", image: #imageLiteral(resourceName: "search")),
             createNavigationController(for: ViewController(), title: "Favorites", image: #imageLiteral(resourceName: "favorites")),
-            createNavigationController(for: ViewController(), title: "Search", image: #imageLiteral(resourceName: "search")),
             createNavigationController(for: ViewController(), title: "Downloads", image: #imageLiteral(resourceName: "downloads"))
         ]
     }
     
     
     
-    // MARK:- Helper Functions
+    // MARK: - Helper Functions
     
     private func createNavigationController(for rootViewController: UIViewController, title: String, image: UIImage) -> UIViewController {
         let navController = UINavigationController(rootViewController: rootViewController)
