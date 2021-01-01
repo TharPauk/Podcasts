@@ -34,6 +34,9 @@ class PodcastsSearchController: UITableViewController, UISearchBarDelegate {
     }
     
     private func setupTableView() {
+        // This removes horizontal lines when table view is empty
+        tableView.tableFooterView = UIView()
+        
         let nib = UINib(nibName: "PodcastCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: cellId)
     }
@@ -53,6 +56,20 @@ class PodcastsSearchController: UITableViewController, UISearchBarDelegate {
     
     
     // MARK: - UITableView Functions
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.textColor = .systemPurple
+        label.font = .systemFont(ofSize: 18, weight: .semibold)
+        label.text = "No results found.\nPlease enter keyword to search."
+        return label
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return podcasts.count > 0 ? 0 : 200
+    }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         podcasts.count
