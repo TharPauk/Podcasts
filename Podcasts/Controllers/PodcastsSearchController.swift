@@ -6,26 +6,13 @@
 //
 
 import UIKit
+import Alamofire
 
 class PodcastsSearchController: UITableViewController, UISearchBarDelegate {
     
-    let podcasts = [
-        Podcast(name: "Lets Build Instagram", artistName: "Brian Voong"),
-        Podcast(name: "iOS Development", artistName: "Sean Allan"),
-        Podcast(name: "Lets Build Instagram", artistName: "Brian Voong"),
-        Podcast(name: "iOS Development", artistName: "Sean Allan"),
-        Podcast(name: "Lets Build Instagram", artistName: "Brian Voong"),
-        Podcast(name: "iOS Development", artistName: "Sean Allan"),
-        Podcast(name: "Lets Build Instagram", artistName: "Brian Voong"),
-        Podcast(name: "iOS Development", artistName: "Sean Allan"),
-        Podcast(name: "Lets Build Instagram", artistName: "Brian Voong"),
-        Podcast(name: "iOS Development", artistName: "Sean Allan"),
-        Podcast(name: "Lets Build Instagram", artistName: "Brian Voong"),
-        Podcast(name: "iOS Development", artistName: "Sean Allan"),
-    ]
-    
-    let cellId = "cellId"
-    let searchController = UISearchController(searchResultsController: nil)
+    private var podcasts = [Podcast]()
+    private let cellId = "cellId"
+    private let searchController = UISearchController(searchResultsController: nil)
     
     // MARK: - LifeCycle Functions
         
@@ -51,10 +38,32 @@ class PodcastsSearchController: UITableViewController, UISearchBarDelegate {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
     }
     
+    
+    
+    // MARK: - Search Functions
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
+        let url = "https://itunes.apple.com/search"
+        let parameters = ["term": searchText, "media": "podcast"]
+        
+        AF.request(url, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: nil).responseData { response in
+            if let err = response.error {
+                print("Error in requesting \(url) : \(err)")
+            }
+            
+            guard let data = response.data else { return }
+            do {
+                let searchResult = try JSONDecoder().decode(SearchResults.self, from: data)
+                self.podcasts = searchResult.results
+                self.tableView.reloadData()
+                
+            } catch let err {
+                print("Error in decoding: \(err)")
+            }
+        }
+       
     }
-    
     
     
     // MARK: - UITableView Functions
@@ -66,7 +75,7 @@ class PodcastsSearchController: UITableViewController, UISearchBarDelegate {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         let podcast = podcasts[indexPath.row]
-        cell.textLabel?.text = "\(podcast.name)\n\(podcast.artistName)"
+        cell.textLabel?.text = "\(podcast.trackName ?? "")\n\(podcast.artistName ?? "")"
         cell.textLabel?.numberOfLines = 0
         cell.imageView?.image = #imageLiteral(resourceName: "appicon")
         return cell
