@@ -36,28 +36,41 @@ class APIService {
     
     
     func fetchEpisodes(podcast: Podcast, completion: @escaping ([Episode]) -> ()) {
-        guard let feedUrl = podcast.feedUrl else { return }
-        
-        let secureUrl = feedUrl.contains("https:") ? feedUrl : feedUrl.replacingOccurrences(of: "http:", with: "https:")
-        
-        guard let url = URL(string: secureUrl) else { return }
+        guard let feedUrl = podcast.feedUrl,
+              let url = URL(string: feedUrl.toSecureHTTPS())
+        else { return }
         
         let parser = FeedParser(URL: url)
         parser.parseAsync { (result) in
             
             switch result {
             case .success(let feed):
-                var episodes = [Episode]()
-                feed.rssFeed?.items?.forEach {
-                    let episode = Episode(feedItem: $0)
-                    episodes.append(episode)
-                }
-                completion(episodes)
+                completion(self.convertFeedToEpisode(feed: feed))
                 
             case .failure(let err):
                 completion([])
                 print("Fail to fetch episodes: \(err.localizedDescription)")
             }
         }
+    }
+    
+    
+    
+    // MARK: - Helper Functions
+    
+    private func convertFeedToEpisode(feed: Feed) -> [Episode] {
+        var episodes = [Episode]()
+        let podcastImageUrl = feed.rssFeed?.iTunes?.iTunesImage?.attributes?.href
+        
+        feed.rssFeed?.items?.forEach {
+            var episode = Episode(feedItem: $0)
+            
+            // check if each episode has an image, if not use podcast image for an episode image
+            if episode.imageUrl == nil {
+                episode.imageUrl = podcastImageUrl
+            }
+            episodes.append(episode)
+        }
+        return episodes
     }
 }

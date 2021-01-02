@@ -19,6 +19,11 @@ class EpisodeCell: UITableViewCell {
             titleLabel.text = episode.title
             descriptionLabel.text = episode.description
             pubDateLabel.text = changeDateFormat(date: episode.pudDate)
+            
+            if let imageUrl = episode.imageUrl,
+               let url = URL(string: imageUrl.toSecureHTTPS()) {
+                episodeImageView.sd_setImage(with: url)
+            }
         }
     }
     
