@@ -38,7 +38,8 @@ class EpisodesController: UITableViewController {
     
     private func setupTableView() {
         tableView.tableFooterView = UIView()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
+        let nib = UINib(nibName: "EpisodeCell", bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: cellId)
     }
     
     
@@ -50,7 +51,6 @@ class EpisodesController: UITableViewController {
     }
     
     
-    
     // MARK: - UITableView Functions
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -58,10 +58,13 @@ class EpisodesController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
-        cell.textLabel?.text = episodes[indexPath.row].title
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! EpisodeCell
+        cell.episode = episodes[indexPath.row]
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        132
+    }
     
 }
