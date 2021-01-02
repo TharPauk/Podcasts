@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import FeedKit
 
 class EpisodesController: UITableViewController {
     
@@ -21,28 +20,15 @@ class EpisodesController: UITableViewController {
     }
     
     
+    // MARK: - Fetch Data
+    
     private func fetchEpisodes() {
-        guard let feedUrl = podcast?.feedUrl else { return }
+        guard let podcast = self.podcast else { return }
         
-        let secureUrl = feedUrl.contains("https:") ? feedUrl : feedUrl.replacingOccurrences(of: "http:", with: "https:")
-        
-        guard let url = URL(string: secureUrl) else { return }
-        
-        let parser = FeedParser(URL: url)
-        parser.parseAsync { (result) in
-            
-            switch result {
-            case .success(let feed):
-                feed.rssFeed?.items?.forEach {
-                    let episode = Episode()
-                    episode.title = $0.title
-                    self.episodes.append(episode)
-                }
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-            case .failure(let err):
-                print("Fail to fetch episodes: \(err.localizedDescription)")
+        APIService.shared.fetchEpisodes(podcast: podcast) { (episodes) in
+            DispatchQueue.main.async {
+                self.episodes = episodes
+                self.tableView.reloadData()
             }
         }
     }

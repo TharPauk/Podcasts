@@ -6,7 +6,17 @@
 //
 
 import Foundation
+import FeedKit
 
-class Episode: Codable {
-    var title: String?
+struct Episode: Codable {
+    let title: String
+    let pudDate: Date
+    let description: String
+    
+    init(feedItem: RSSFeedItem) {
+        self.title = feedItem.title ?? ""
+        self.pudDate = feedItem.pubDate ?? Date()
+        self.description = feedItem.description ?? ""
+    }
+    
 }

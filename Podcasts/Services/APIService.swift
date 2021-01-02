@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import FeedKit
 
 class APIService {
     
@@ -31,5 +32,32 @@ class APIService {
             }
         }
        
+    }
+    
+    
+    func fetchEpisodes(podcast: Podcast, completion: @escaping ([Episode]) -> ()) {
+        guard let feedUrl = podcast.feedUrl else { return }
+        
+        let secureUrl = feedUrl.contains("https:") ? feedUrl : feedUrl.replacingOccurrences(of: "http:", with: "https:")
+        
+        guard let url = URL(string: secureUrl) else { return }
+        
+        let parser = FeedParser(URL: url)
+        parser.parseAsync { (result) in
+            
+            switch result {
+            case .success(let feed):
+                var episodes = [Episode]()
+                feed.rssFeed?.items?.forEach {
+                    let episode = Episode(feedItem: $0)
+                    episodes.append(episode)
+                }
+                completion(episodes)
+                
+            case .failure(let err):
+                completion([])
+                print("Fail to fetch episodes: \(err.localizedDescription)")
+            }
+        }
     }
 }
