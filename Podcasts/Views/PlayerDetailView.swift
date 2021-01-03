@@ -14,7 +14,15 @@ class PlayerDetailView: UIView {
     
     @IBOutlet weak var episodeTitleLabel: UILabel!
     @IBOutlet weak var authorLabel: UILabel!
-    @IBOutlet weak var episodeImageView: UIImageView!
+    
+    @IBOutlet weak var episodeImageView: UIImageView! {
+        didSet {
+            episodeImageView.layer.cornerRadius = 5
+            episodeImageView.clipsToBounds = true
+            
+            shrinkEpisideImageView()
+        }
+    }
     @IBOutlet weak var playPauseButton: UIButton! {
         didSet { 
             playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
@@ -45,6 +53,19 @@ class PlayerDetailView: UIView {
         return avPlayer
     }()
     
+    
+    // MARK: - LifeCycle Functions
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        let time = CMTime(value: 1, timescale: 3)
+        
+        player.addBoundaryTimeObserver(forTimes: [NSValue(time: time)], queue: .main) {
+            self.enlargeEpisodeImageView()
+        }
+    }
+    
     private func playEpisode() {
         guard let url = URL(string: episode.streamUrl) else { return }
         
@@ -57,17 +78,33 @@ class PlayerDetailView: UIView {
         if player.timeControlStatus == .paused {
             player.play()
             playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
-            return
+            enlargeEpisodeImageView()
+        } else {
+            player.pause()
+            playPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+            shrinkEpisideImageView()
         }
-        player.pause()
-        playPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
     }
     
+    private func enlargeEpisodeImageView() {
+        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut) {
+            self.episodeImageView.transform = .identity
+        }
+    }
+    
+    private func shrinkEpisideImageView() {
+        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut) {
+            self.episodeImageView.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+        }
+    }
     
     
     // MARK: - @IBAction
     
+    
+    
     @IBAction func handleDismiss(_ sender: Any) {
+
         self.removeFromSuperview()
     }
 }
