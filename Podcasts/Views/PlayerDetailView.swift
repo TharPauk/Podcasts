@@ -14,13 +14,15 @@ class PlayerDetailView: UIView {
     
     @IBOutlet weak var episodeTitleLabel: UILabel!
     @IBOutlet weak var authorLabel: UILabel!
+    @IBOutlet weak var currentTimeSlider: UISlider!
+    @IBOutlet weak var currentTimeLabel: UILabel!
+    @IBOutlet weak var durationLabel: UILabel!
     
     @IBOutlet weak var episodeImageView: UIImageView! {
         didSet {
             episodeImageView.layer.cornerRadius = 5
             episodeImageView.clipsToBounds = true
-            
-            shrinkEpisideImageView()
+            episodeImageView.transform = shrunkenTransform
         }
     }
     @IBOutlet weak var playPauseButton: UIButton! {
@@ -29,6 +31,7 @@ class PlayerDetailView: UIView {
             playPauseButton.addTarget(self, action: #selector(handlePlayPause), for: .touchUpInside)
         }
     }
+    
     
     
     // MARK: - Properties
@@ -53,15 +56,21 @@ class PlayerDetailView: UIView {
         return avPlayer
     }()
     
+    private let shrunkenTransform = CGAffineTransform(scaleX: 0.75, y: 0.75)
+    
+    
     
     // MARK: - LifeCycle Functions
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        let time = CMTime(value: 1, timescale: 3)
+        setupPlayerCurrentTimeObserver()
         
-        player.addBoundaryTimeObserver(forTimes: [NSValue(time: time)], queue: .main) {
+        let time = CMTime(value: 1, timescale: 3)
+        let times = [NSValue(time: time)]
+        player.addBoundaryTimeObserver(forTimes: times, queue: .main) {
             self.enlargeEpisodeImageView()
         }
     }
@@ -86,6 +95,25 @@ class PlayerDetailView: UIView {
         }
     }
     
+    private func setupPlayerCurrentTimeObserver() {
+        let interval = CMTime(value: 1, timescale: 2)
+        
+        player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { (time) in
+            self.currentTimeLabel.text = time.toString()
+            let duration = self.player.currentItem?.duration
+            self.durationLabel.text = duration?.toString()
+            self.updateCurrentTimeSlider()
+        }
+    }
+    
+    private func updateCurrentTimeSlider() {
+        let currentTimeSeconds = CMTimeGetSeconds(player.currentTime())
+        let durationTimeSeconds = CMTimeGetSeconds(player.currentItem?.duration ?? CMTime(value: 1, timescale: 1))
+        let percentage = currentTimeSeconds / durationTimeSeconds
+        self.currentTimeSlider.value = Float(percentage)
+    }
+    
+    
     private func enlargeEpisodeImageView() {
         UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut) {
             self.episodeImageView.transform = .identity
@@ -94,14 +122,13 @@ class PlayerDetailView: UIView {
     
     private func shrinkEpisideImageView() {
         UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut) {
-            self.episodeImageView.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+            self.episodeImageView.transform = self.shrunkenTransform
         }
     }
     
     
+    
     // MARK: - @IBAction
-    
-    
     
     @IBAction func handleDismiss(_ sender: Any) {
 

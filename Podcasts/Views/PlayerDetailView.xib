@@ -70,20 +70,20 @@
                                     <rect key="frame" x="0.0" y="0.0" width="366" height="15.5"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
-                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="pgb-wH-W4U">
+                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="pgb-wH-W4U">
                                     <rect key="frame" x="-2" y="17.5" width="370" height="16"/>
                                     <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </slider>
                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="Pmd-vw-AD0">
                                     <rect key="frame" x="0.0" y="34.5" width="366" height="15.5"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lNj-uW-hiB">
-                                            <rect key="frame" x="0.0" y="0.0" width="26.5" height="15.5"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lNj-uW-hiB">
+                                            <rect key="frame" x="0.0" y="0.0" width="34" height="15.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" systemColor="systemGrayColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3:45" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="603-3h-UTS">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="603-3h-UTS">
                                             <rect key="frame" x="339.5" y="0.0" width="26.5" height="15.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" systemColor="systemGrayColor"/>
@@ -206,6 +206,9 @@
             </constraints>
             <connections>
                 <outlet property="authorLabel" destination="JJc-lr-d9K" id="8SX-Y5-ELQ"/>
+                <outlet property="currentTimeLabel" destination="lNj-uW-hiB" id="MB1-BA-Zsx"/>
+                <outlet property="currentTimeSlider" destination="pgb-wH-W4U" id="dNH-zS-rHd"/>
+                <outlet property="durationLabel" destination="603-3h-UTS" id="3ZE-dM-CV9"/>
                 <outlet property="episodeImageView" destination="WOC-aC-o9S" id="mTQ-dv-xBA"/>
                 <outlet property="episodeTitleLabel" destination="5YB-zg-m98" id="8ZQ-d2-Ria"/>
                 <outlet property="playPauseButton" destination="4Nv-PM-asT" id="hKT-XH-5RY"/>
