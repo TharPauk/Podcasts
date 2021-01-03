@@ -15,6 +15,32 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
+                <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0bz-CS-YJw">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Ka1-AH-xmn">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ELS-7Q-fRI">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="ypG-aC-Gi7">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <vibrancyEffect>
+                                    <blurEffect style="prominent"/>
+                                </vibrancyEffect>
+                            </visualEffectView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="ELS-7Q-fRI" secondAttribute="trailing" id="6uI-DZ-MVR"/>
+                            <constraint firstItem="ELS-7Q-fRI" firstAttribute="top" secondItem="Ka1-AH-xmn" secondAttribute="top" id="PKl-4e-47A"/>
+                            <constraint firstItem="ELS-7Q-fRI" firstAttribute="leading" secondItem="Ka1-AH-xmn" secondAttribute="leading" id="aMl-ys-AcG"/>
+                            <constraint firstAttribute="bottom" secondItem="ELS-7Q-fRI" secondAttribute="bottom" id="hdM-4c-Wii"/>
+                        </constraints>
+                    </view>
+                    <blurEffect style="systemMaterial"/>
+                </visualEffectView>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="9sN-rc-ngq">
                     <rect key="frame" x="24" y="44" width="366" height="794"/>
                     <subviews>
@@ -42,7 +68,7 @@
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fg6-DM-ogA">
                                     <rect key="frame" x="0.0" y="0.0" width="366" height="15.5"/>
-                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                                 <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="pgb-wH-W4U">
                                     <rect key="frame" x="-2" y="17.5" width="370" height="16"/>
@@ -94,7 +120,7 @@
                             <subviews>
                                 <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xrw-G8-vgf">
                                     <rect key="frame" x="0.0" y="0.0" width="50" height="200"/>
-                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G6j-GM-ZoG">
                                     <rect key="frame" x="55.5" y="0.0" width="44" height="200"/>
@@ -106,7 +132,7 @@
                                 </button>
                                 <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rxl-zC-vHp">
                                     <rect key="frame" x="105.5" y="0.0" width="50" height="200"/>
-                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Nv-PM-asT">
                                     <rect key="frame" x="156" y="0.0" width="54" height="200"/>
@@ -118,7 +144,7 @@
                                 </button>
                                 <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Dg-h6-DEV">
                                     <rect key="frame" x="210.5" y="0.0" width="50" height="200"/>
-                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xpe-ve-AMF">
                                     <rect key="frame" x="266.5" y="0.0" width="44" height="200"/>
@@ -130,7 +156,7 @@
                                 </button>
                                 <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1O3-3R-RNQ">
                                     <rect key="frame" x="316" y="0.0" width="50" height="200"/>
-                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                             </subviews>
                         </stackView>
@@ -159,6 +185,7 @@
                             </constraints>
                         </stackView>
                     </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="ayb-sT-tH2" secondAttribute="trailing" id="RmF-QE-c9w"/>
                         <constraint firstItem="ayb-sT-tH2" firstAttribute="leading" secondItem="9sN-rc-ngq" secondAttribute="leading" id="bTA-fK-PUL"/>
@@ -166,12 +193,16 @@
                 </stackView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="diS-SY-iMb"/>
-            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
+                <constraint firstItem="0bz-CS-YJw" firstAttribute="leading" secondItem="1pN-Cz-OyR" secondAttribute="leading" id="67w-Oo-1A4"/>
                 <constraint firstItem="diS-SY-iMb" firstAttribute="trailing" secondItem="9sN-rc-ngq" secondAttribute="trailing" constant="24" id="NLJ-ZQ-V2x"/>
                 <constraint firstItem="9sN-rc-ngq" firstAttribute="top" secondItem="diS-SY-iMb" secondAttribute="top" id="PpT-so-BIb"/>
                 <constraint firstItem="diS-SY-iMb" firstAttribute="bottom" secondItem="9sN-rc-ngq" secondAttribute="bottom" constant="24" id="RhC-wb-VP8"/>
                 <constraint firstItem="9sN-rc-ngq" firstAttribute="leading" secondItem="diS-SY-iMb" secondAttribute="leading" constant="24" id="WOa-AJ-AOx"/>
+                <constraint firstAttribute="trailing" secondItem="0bz-CS-YJw" secondAttribute="trailing" id="pC6-Z6-gbj"/>
+                <constraint firstAttribute="bottom" secondItem="0bz-CS-YJw" secondAttribute="bottom" id="rQ5-Lo-gnG"/>
+                <constraint firstItem="0bz-CS-YJw" firstAttribute="top" secondItem="1pN-Cz-OyR" secondAttribute="top" id="xhf-5k-BZS"/>
             </constraints>
             <connections>
                 <outlet property="authorLabel" destination="JJc-lr-d9K" id="8SX-Y5-ELQ"/>
@@ -191,9 +222,6 @@
         <image name="rewind15" width="45.5" height="45.5"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBlueColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
