@@ -11,6 +11,7 @@ class EpisodesController: UITableViewController {
     
     private let cellId = "cellId"
     var episodes = [Episode]()
+    var timer: Timer?
     
     var podcast: Podcast? {
         didSet {
@@ -24,13 +25,16 @@ class EpisodesController: UITableViewController {
     
     private func fetchEpisodes() {
         guard let podcast = self.podcast else { return }
+        timer?.invalidate()
         
-        APIService.shared.fetchEpisodes(podcast: podcast) { (episodes) in
-            DispatchQueue.main.async {
-                self.episodes = episodes
-                self.tableView.reloadData()
+        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { (_) in
+            APIService.shared.fetchEpisodes(podcast: podcast) { (episodes) in
+                DispatchQueue.main.async {
+                    self.episodes = episodes
+                    self.tableView.reloadData()
+                }
             }
-        }
+        })
     }
     
     
@@ -55,6 +59,17 @@ class EpisodesController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         episodes.count
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let activityView = UIActivityIndicatorView(style: .medium)
+        activityView.hidesWhenStopped = true
+        activityView.startAnimating()
+        return activityView
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        episodes.isEmpty ? 200 : 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

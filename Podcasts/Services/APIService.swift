@@ -40,16 +40,18 @@ class APIService {
               let url = URL(string: feedUrl.toSecureHTTPS())
         else { return }
         
-        let parser = FeedParser(URL: url)
-        parser.parseAsync { (result) in
-            
-            switch result {
-            case .success(let feed):
-                completion(self.convertFeedToEpisode(feed: feed))
+        DispatchQueue.global(qos: .background).async {
+            let parser = FeedParser(URL: url)
+            parser.parseAsync { (result) in
                 
-            case .failure(let err):
-                completion([])
-                print("Fail to fetch episodes: \(err.localizedDescription)")
+                switch result {
+                case .success(let feed):
+                    completion(self.convertFeedToEpisode(feed: feed))
+                    
+                case .failure(let err):
+                    completion([])
+                    print("Fail to fetch episodes: \(err.localizedDescription)")
+                }
             }
         }
     }

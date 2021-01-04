@@ -78,9 +78,9 @@ class PlayerDetailView: UIView {
         
         let time = CMTime(value: 1, timescale: 3)
         let times = [NSValue(time: time)]
-        player.addBoundaryTimeObserver(forTimes: times, queue: .main) {
-            self.currentTimeSlider.isEnabled = true
-            self.enlargeEpisodeImageView()
+        player.addBoundaryTimeObserver(forTimes: times, queue: .main) { [weak self] in
+            self?.currentTimeSlider.isEnabled = true
+            self?.enlargeEpisodeImageView()
         }
     }
     
@@ -107,11 +107,11 @@ class PlayerDetailView: UIView {
     private func setupPlayerCurrentTimeObserver() {
         let interval = CMTime(value: 1, timescale: 2)
         
-        player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { (time) in
-            self.currentTimeLabel.text = time.toString()
-            let duration = self.player.currentItem?.duration
-            self.durationLabel.text = duration?.toString()
-            self.updateCurrentTimeSlider()
+        player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] (time) in
+            self?.currentTimeLabel.text = time.toString()
+            let duration = self?.player.currentItem?.duration
+            self?.durationLabel.text = duration?.toString()
+            self?.updateCurrentTimeSlider()
         }
     }
     
@@ -174,5 +174,7 @@ class PlayerDetailView: UIView {
         MPVolumeView.setVolume(sender.value)
     }
     
-    
+    deinit {
+        print("PlayerDetailView deinit.")
+    }
 }
