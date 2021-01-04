@@ -80,13 +80,16 @@ class EpisodesController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let keyWindow = UIApplication.shared.keyWindow
-        let playerDetailView = Bundle.main.loadNibNamed("PlayerDetailView", owner: self, options: nil)?.first as! PlayerDetailView
+        guard let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController else { return }
         
-        playerDetailView.episode = episodes[indexPath.row]
-        playerDetailView.frame = view.frame
+        let episode = episodes[indexPath.row]
+        mainTabBarController.maximizePlayerDetailView(episode: episode)
         
-        keyWindow?.addSubview(playerDetailView)
+//        let playerDetailView = PlayerDetailView.initFromNib()
+//        playerDetailView.episode = episodes[indexPath.row]
+//        playerDetailView.frame = view.frame
+//
+//        keyWindow?.addSubview(playerDetailView)
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

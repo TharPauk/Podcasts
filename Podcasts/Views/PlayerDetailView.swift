@@ -19,6 +19,25 @@ class PlayerDetailView: UIView {
     @IBOutlet weak var currentTimeLabel: UILabel!
     @IBOutlet weak var durationLabel: UILabel!
     
+    
+    @IBOutlet weak var maximizedView: UIStackView!
+    @IBOutlet weak var minimizedView: UIView!
+    
+    
+    @IBOutlet weak var miniEpisodeImageView: UIImageView!
+    @IBOutlet weak var miniTitleLabel: UILabel!
+    @IBOutlet weak var miniPlayPauseButton: UIButton! {
+        didSet {
+            miniPlayPauseButton.addTarget(self, action: #selector(handlePlayPause), for: .touchUpInside)
+        }
+    }
+    @IBOutlet weak var miniFastForwardButton: UIButton! {
+        didSet {
+            miniFastForwardButton.addTarget(self, action: #selector(handleFastForward(_:)), for: .touchUpInside)
+        }
+    }
+    
+    
     @IBOutlet weak var volumeSlider: UISlider! {
         didSet {
             volumeSlider.value = AVAudioSession.sharedInstance().outputVolume
@@ -47,11 +66,13 @@ class PlayerDetailView: UIView {
     var episode: Episode! {
         didSet {
             episodeTitleLabel.text = episode.title
+            miniTitleLabel.text = episode.title
             authorLabel.text = episode.author
             
             if let urlString = episode.imageUrl?.toSecureHTTPS(),
                let url = URL(string: urlString) {
                 episodeImageView.sd_setImage(with: url)
+                miniEpisodeImageView.image = episodeImageView.image
             }
             
             playEpisode()
@@ -73,10 +94,22 @@ class PlayerDetailView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
+        
         setupPlayerStartTimeObserver()
         setupPlayerCurrentTimeObserver()
         
         MPVolumeView.volumeSlider?.addTarget(self, action: #selector(onMPVolumeSliderChange(sender:)), for: .valueChanged)
+    }
+    
+    @objc func handleTapMaximize() {
+        if let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController {
+            mainTabBarController.maximizePlayerDetailView(episode: nil)
+        }
+    }
+    
+    static func initFromNib() -> PlayerDetailView {
+        return Bundle.main.loadNibNamed("PlayerDetailView", owner: self, options: nil)?.first as! PlayerDetailView
     }
     
     @objc private func onMPVolumeSliderChange(sender: UISlider) {
@@ -111,10 +144,12 @@ class PlayerDetailView: UIView {
         if player.timeControlStatus == .paused {
             player.play()
             playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+            miniPlayPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
             enlargeEpisodeImageView()
         } else {
             player.pause()
             playPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+            miniPlayPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
             shrinkEpisideImageView()
         }
     }
@@ -160,7 +195,11 @@ class PlayerDetailView: UIView {
     
     @IBAction func handleDismiss(_ sender: Any) {
 
-        self.removeFromSuperview()
+        if let mainTabBarController =  UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController {
+            mainTabBarController.minimizePlayerDetailView()
+        } else {
+            print("NOPE")
+        }
     }
     
     @IBAction func handleCurrentTimeSlider(_ sender: Any) {
