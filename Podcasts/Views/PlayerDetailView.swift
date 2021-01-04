@@ -8,6 +8,7 @@
 import UIKit
 import AVKit
 
+import MediaPlayer
 class PlayerDetailView: UIView {
     
     // MARK: - IBOutlet
@@ -17,6 +18,13 @@ class PlayerDetailView: UIView {
     @IBOutlet weak var currentTimeSlider: UISlider!
     @IBOutlet weak var currentTimeLabel: UILabel!
     @IBOutlet weak var durationLabel: UILabel!
+    
+    @IBOutlet weak var volumeSlider: UISlider! {
+        didSet {
+            volumeSlider.value = AVAudioSession.sharedInstance().outputVolume
+        }
+    }
+    
     
     @IBOutlet weak var episodeImageView: UIImageView! {
         didSet {
@@ -71,6 +79,7 @@ class PlayerDetailView: UIView {
         let time = CMTime(value: 1, timescale: 3)
         let times = [NSValue(time: time)]
         player.addBoundaryTimeObserver(forTimes: times, queue: .main) {
+            self.currentTimeSlider.isEnabled = true
             self.enlargeEpisodeImageView()
         }
     }
@@ -127,6 +136,12 @@ class PlayerDetailView: UIView {
     }
     
     
+    private func seekToTime(delta: Int64) {
+        let seconds = CMTime(value: delta, timescale: 1)
+        let seekTime = CMTimeAdd(player.currentTime(), seconds)
+        player.seek(to: seekTime)
+    }
+    
     
     // MARK: - @IBAction
     
@@ -134,4 +149,30 @@ class PlayerDetailView: UIView {
 
         self.removeFromSuperview()
     }
+    
+    @IBAction func handleCurrentTimeSlider(_ sender: Any) {
+    
+        let percentage = currentTimeSlider.value
+        guard let duration = player.currentItem?.duration else { return }
+        
+        let durationInSeconds = CMTimeGetSeconds(duration)
+        let seekTimeInSeconds = Float64(percentage) * durationInSeconds
+        let seekTime = CMTimeMakeWithSeconds(seekTimeInSeconds, preferredTimescale: 1)
+        player.seek(to: seekTime)
+        
+    }
+    
+    @IBAction func handleFastForward(_ sender: Any) {
+        seekToTime(delta: 15)
+    }
+    
+    @IBAction func handleRewind(_ sender: Any) {
+        seekToTime(delta: -15)
+    }
+    
+    @IBAction func handleVolumeChange(_ sender: UISlider) {
+        MPVolumeView.setVolume(sender.value)
+    }
+    
+    
 }

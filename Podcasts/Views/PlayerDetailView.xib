@@ -70,9 +70,12 @@
                                     <rect key="frame" x="0.0" y="0.0" width="366" height="15.5"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
-                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="pgb-wH-W4U">
+                                <slider opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="pgb-wH-W4U">
                                     <rect key="frame" x="-2" y="17.5" width="370" height="16"/>
                                     <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <connections>
+                                        <action selector="handleCurrentTimeSlider:" destination="1pN-Cz-OyR" eventType="valueChanged" id="lrD-6y-MyS"/>
+                                    </connections>
                                 </slider>
                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="Pmd-vw-AD0">
                                     <rect key="frame" x="0.0" y="34.5" width="366" height="15.5"/>
@@ -129,6 +132,9 @@
                                     </constraints>
                                     <color key="tintColor" systemColor="labelColor"/>
                                     <state key="normal" image="rewind15"/>
+                                    <connections>
+                                        <action selector="handleRewind:" destination="1pN-Cz-OyR" eventType="touchUpInside" id="FdF-zO-W2W"/>
+                                    </connections>
                                 </button>
                                 <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rxl-zC-vHp">
                                     <rect key="frame" x="105.5" y="0.0" width="50" height="200"/>
@@ -153,6 +159,9 @@
                                     </constraints>
                                     <color key="tintColor" systemColor="labelColor"/>
                                     <state key="normal" image="fastforward15"/>
+                                    <connections>
+                                        <action selector="handleFastForward:" destination="1pN-Cz-OyR" eventType="touchUpInside" id="Y3i-Pd-FRI"/>
+                                    </connections>
                                 </button>
                                 <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1O3-3R-RNQ">
                                     <rect key="frame" x="316" y="0.0" width="50" height="200"/>
@@ -169,9 +178,12 @@
                                         <constraint firstAttribute="width" constant="34" id="CF7-vW-QVh"/>
                                     </constraints>
                                 </imageView>
-                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="gY1-81-Ee2">
+                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="gY1-81-Ee2">
                                     <rect key="frame" x="37" y="0.0" width="292" height="35"/>
                                     <color key="tintColor" systemColor="systemBlueColor"/>
+                                    <connections>
+                                        <action selector="handleVolumeChange:" destination="1pN-Cz-OyR" eventType="valueChanged" id="PbB-G1-sSV"/>
+                                    </connections>
                                 </slider>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="max_volume" translatesAutoresizingMaskIntoConstraints="NO" id="Rds-hf-V0n">
                                     <rect key="frame" x="332" y="0.0" width="34" height="34"/>
@@ -212,6 +224,7 @@
                 <outlet property="episodeImageView" destination="WOC-aC-o9S" id="mTQ-dv-xBA"/>
                 <outlet property="episodeTitleLabel" destination="5YB-zg-m98" id="8ZQ-d2-Ria"/>
                 <outlet property="playPauseButton" destination="4Nv-PM-asT" id="hKT-XH-5RY"/>
+                <outlet property="volumeSlider" destination="gY1-81-Ee2" id="Of9-P5-Ngj"/>
             </connections>
             <point key="canvasLocation" x="231.8840579710145" y="-2.0089285714285712"/>
         </view>
