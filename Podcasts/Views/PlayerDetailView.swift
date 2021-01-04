@@ -70,19 +70,34 @@ class PlayerDetailView: UIView {
     
     // MARK: - LifeCycle Functions
     
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        setupPlayerStartTimeObserver()
         setupPlayerCurrentTimeObserver()
         
-        let time = CMTime(value: 1, timescale: 3)
-        let times = [NSValue(time: time)]
-        player.addBoundaryTimeObserver(forTimes: times, queue: .main) { [weak self] in
-            self?.currentTimeSlider.isEnabled = true
-            self?.enlargeEpisodeImageView()
+        MPVolumeView.volumeSlider?.addTarget(self, action: #selector(onMPVolumeSliderChange(sender:)), for: .valueChanged)
+    }
+    
+    @objc private func onMPVolumeSliderChange(sender: UISlider) {
+        volumeSlider.value = sender.value
+    }
+    
+    private func enlargeEpisodeImageView() {
+        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut) {
+            self.episodeImageView.transform = .identity
         }
     }
+    
+    private func shrinkEpisideImageView() {
+        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut) {
+            self.episodeImageView.transform = self.shrunkenTransform
+        }
+    }
+    
+    
+    
+    // MARK: - Player related Functions
     
     private func playEpisode() {
         guard let url = URL(string: episode.streamUrl) else { return }
@@ -101,6 +116,16 @@ class PlayerDetailView: UIView {
             player.pause()
             playPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
             shrinkEpisideImageView()
+        }
+    }
+    
+    
+    private func setupPlayerStartTimeObserver() {
+        let time = CMTime(value: 1, timescale: 3)
+        let times = [NSValue(time: time)]
+        player.addBoundaryTimeObserver(forTimes: times, queue: .main) { [weak self] in
+            self?.currentTimeSlider.isEnabled = true
+            self?.enlargeEpisodeImageView()
         }
     }
     
@@ -123,24 +148,12 @@ class PlayerDetailView: UIView {
     }
     
     
-    private func enlargeEpisodeImageView() {
-        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut) {
-            self.episodeImageView.transform = .identity
-        }
-    }
-    
-    private func shrinkEpisideImageView() {
-        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut) {
-            self.episodeImageView.transform = self.shrunkenTransform
-        }
-    }
-    
-    
     private func seekToTime(delta: Int64) {
         let seconds = CMTime(value: delta, timescale: 1)
         let seekTime = CMTimeAdd(player.currentTime(), seconds)
         player.seek(to: seekTime)
     }
+    
     
     
     // MARK: - @IBAction
@@ -171,7 +184,7 @@ class PlayerDetailView: UIView {
     }
     
     @IBAction func handleVolumeChange(_ sender: UISlider) {
-        MPVolumeView.setVolume(sender.value)
+        MPVolumeView.volume = sender.value
     }
     
     deinit {

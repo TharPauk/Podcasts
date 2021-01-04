@@ -8,16 +8,21 @@
 import MediaPlayer
 
 extension MPVolumeView {
-    static func setVolume(_ volume: Float) {
-
-        let volumeView = MPVolumeView()
-        let slider = volumeView.subviews.first(where: { $0 is UISlider }) as? UISlider
-
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.01) {
-            volumeView.isHidden = true
-            volumeView.showsVolumeSlider = false
-            slider?.value = volume
+    
+    static let volumeSlider: UISlider? = {
+        let volumeView = MPVolumeView(frame: .zero)
+        return volumeView.subviews.first(where: { $0 is UISlider }) as? UISlider
+    }()
+    
+    static var volume: Float {
+        get {
+            return volumeSlider?.value ?? AVAudioSession.sharedInstance().outputVolume
         }
-
+        set {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.01) {
+                volumeSlider?.value = newValue
+            }
+        }
     }
+
 }
