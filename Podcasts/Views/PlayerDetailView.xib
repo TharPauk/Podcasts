@@ -59,21 +59,21 @@
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wwp-h6-I7g">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wwp-h6-I7g">
                                     <rect key="frame" x="294" y="0.0" width="48" height="48"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="48" id="iAP-cY-hSk"/>
                                     </constraints>
                                     <color key="tintColor" systemColor="labelColor"/>
-                                    <state key="normal" title="Button" image="pause"/>
+                                    <state key="normal" image="pause"/>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OvM-i1-Ohq">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OvM-i1-Ohq">
                                     <rect key="frame" x="350" y="0.0" width="48" height="48"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="48" id="DZU-K0-kXi"/>
                                     </constraints>
                                     <color key="tintColor" systemColor="labelColor"/>
-                                    <state key="normal" title="Button" image="fastforward15"/>
+                                    <state key="normal" image="fastforward15"/>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
