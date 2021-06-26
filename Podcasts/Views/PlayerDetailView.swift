@@ -74,7 +74,7 @@ class PlayerDetailView: UIView {
             if let urlString = episode.imageUrl?.toSecureHTTPS(),
                let url = URL(string: urlString) {
                 episodeImageView.sd_setImage(with: url)
-                miniEpisodeImageView.image = episodeImageView.image
+                miniEpisodeImageView.sd_setImage(with: url)
             }
             
             playEpisode()
@@ -98,10 +98,32 @@ class PlayerDetailView: UIView {
         
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
         
+        addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePan)))
+        
         setupPlayerStartTimeObserver()
         setupPlayerCurrentTimeObserver()
         
         MPVolumeView.volumeSlider?.addTarget(self, action: #selector(onMPVolumeSliderChange(sender:)), for: .valueChanged)
+    }
+    
+    @objc func handlePan(gesture: UIPanGestureRecognizer) {
+        switch gesture.state {
+        case .changed:
+            let y = gesture.translation(in: self.superview).y
+            self.transform = CGAffineTransform(translationX: 0, y: y)
+            self.minimizedView.alpha = 1 + y / 300
+            self.maximizedView.alpha = -y / 200
+            
+        case .ended:
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                self.transform = .identity
+                self.minimizedView.alpha = 1
+                self.maximizedView.alpha = 0
+            })
+        default:
+            break
+        }
+        
     }
     
     @objc func handleTapMaximize() {

@@ -44,6 +44,13 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eTf-tb-d85">
                     <rect key="frame" x="0.0" y="44" width="414" height="64"/>
                     <subviews>
+                        <view alpha="0.29999999999999999" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Fd-Jg-Rfp">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="0.5"/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="0.5" id="Dzs-Gq-UXw"/>
+                            </constraints>
+                        </view>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="oZJ-uQ-Agb">
                             <rect key="frame" x="8" y="8" width="398" height="48"/>
                             <subviews>
@@ -87,10 +94,13 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstAttribute="trailing" secondItem="2Fd-Jg-Rfp" secondAttribute="trailing" id="8DY-vv-J4B"/>
                         <constraint firstItem="oZJ-uQ-Agb" firstAttribute="top" secondItem="eTf-tb-d85" secondAttribute="top" constant="8" id="E2U-mb-XPf"/>
                         <constraint firstItem="oZJ-uQ-Agb" firstAttribute="leading" secondItem="eTf-tb-d85" secondAttribute="leading" constant="8" id="Hdx-jj-pNb"/>
+                        <constraint firstItem="2Fd-Jg-Rfp" firstAttribute="top" secondItem="eTf-tb-d85" secondAttribute="top" id="LEB-3H-4Pr"/>
                         <constraint firstAttribute="height" constant="64" id="O8J-U0-BJ7"/>
                         <constraint firstAttribute="trailing" secondItem="oZJ-uQ-Agb" secondAttribute="trailing" constant="8" id="d84-Gv-ZqU"/>
+                        <constraint firstItem="2Fd-Jg-Rfp" firstAttribute="leading" secondItem="eTf-tb-d85" secondAttribute="leading" id="iq2-Kc-bVD"/>
                         <constraint firstAttribute="bottom" secondItem="oZJ-uQ-Agb" secondAttribute="bottom" constant="8" id="ora-I7-I5D"/>
                     </constraints>
                 </view>
@@ -125,7 +135,7 @@
                                 </view>
                                 <slider opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="pgb-wH-W4U">
                                     <rect key="frame" x="-2" y="17.5" width="370" height="16"/>
-                                    <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="tintColor" systemColor="systemPurpleColor"/>
                                     <connections>
                                         <action selector="handleCurrentTimeSlider:" destination="1pN-Cz-OyR" eventType="valueChanged" id="lrD-6y-MyS"/>
                                     </connections>
@@ -149,6 +159,7 @@
                                 </stackView>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="tintColor" systemColor="systemPurpleColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="KV5-2K-8gl"/>
                             </constraints>
