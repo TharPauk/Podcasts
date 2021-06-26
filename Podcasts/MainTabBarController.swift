@@ -24,6 +24,7 @@ class MainTabBarController: UITabBarController {
     
     private var minimizedTopAnchorConstraint: NSLayoutConstraint!
     private var maximizedTopAnchorConstraint: NSLayoutConstraint!
+    private var bottomAnchorConstraint: NSLayoutConstraint!
     private let playerDetailView = PlayerDetailView.initFromNib()
     
     private func setupPlayerDetailView() {
@@ -31,13 +32,17 @@ class MainTabBarController: UITabBarController {
         playerDetailView.translatesAutoresizingMaskIntoConstraints = false
         
         maximizedTopAnchorConstraint = playerDetailView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height)
+        maximizedTopAnchorConstraint.isActive = true
+        
+        bottomAnchorConstraint = playerDetailView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: view.frame.height)
+        bottomAnchorConstraint.isActive = true
+        
         minimizedTopAnchorConstraint =  playerDetailView.topAnchor.constraint(equalTo: tabBar.topAnchor, constant: -64)
         
         NSLayoutConstraint.activate([
             maximizedTopAnchorConstraint,
             playerDetailView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             playerDetailView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            playerDetailView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
     
@@ -45,7 +50,7 @@ class MainTabBarController: UITabBarController {
         maximizedTopAnchorConstraint.isActive = true
         minimizedTopAnchorConstraint.isActive = false
         maximizedTopAnchorConstraint.constant = 0
-        
+        bottomAnchorConstraint.constant = 0
         if episode != nil {
             playerDetailView.episode = episode
         }
@@ -63,6 +68,7 @@ class MainTabBarController: UITabBarController {
     
     @objc func minimizePlayerDetailView() {
         maximizedTopAnchorConstraint.isActive = false
+        bottomAnchorConstraint.constant = view.frame.height
         minimizedTopAnchorConstraint.isActive = true
         
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut) {

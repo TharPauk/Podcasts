@@ -89,7 +89,7 @@ class PlayerDetailView: UIView {
     
     private let shrunkenTransform = CGAffineTransform(scaleX: 0.75, y: 0.75)
     
-    
+    var panGesture: UIPanGestureRecognizer!
     
     // MARK: - LifeCycle Functions
     
@@ -97,8 +97,8 @@ class PlayerDetailView: UIView {
         super.awakeFromNib()
         
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
-        
-        addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePan)))
+        panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        addGestureRecognizer(panGesture)
         
         setupPlayerStartTimeObserver()
         setupPlayerCurrentTimeObserver()
@@ -107,29 +107,45 @@ class PlayerDetailView: UIView {
     }
     
     @objc func handlePan(gesture: UIPanGestureRecognizer) {
+       
         switch gesture.state {
-        case .changed:
-            let y = gesture.translation(in: self.superview).y
-            self.transform = CGAffineTransform(translationX: 0, y: y)
-            self.minimizedView.alpha = 1 + y / 300
-            self.maximizedView.alpha = -y / 200
-            
-        case .ended:
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-                self.transform = .identity
-                self.minimizedView.alpha = 1
-                self.maximizedView.alpha = 0
-            })
-        default:
-            break
+        case .changed: handlePanChanged(gesture: gesture)
+        case .ended: handlePanEnded(gesture: gesture)
+        default: break
         }
         
     }
     
+    private func handlePanChanged(gesture: UIPanGestureRecognizer) {
+        let y = gesture.translation(in: self.superview).y
+        
+        transform = CGAffineTransform(translationX: 0, y: y)
+        minimizedView.alpha = 1 + y / 200
+        maximizedView.alpha = -y / 200
+    }
+    
+    private func handlePanEnded(gesture: UIPanGestureRecognizer) {
+        let y = gesture.translation(in: self.superview).y
+        let velocityY = gesture.velocity(in: self.superview).y
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.transform = .identity
+            
+            if y < -200 || velocityY < -500 {
+                let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
+                mainTabBarController?.maximizePlayerDetailView(episode: nil)
+                gesture.isEnabled = false
+            } else {
+                self.minimizedView.alpha = 1
+                self.maximizedView.alpha = 0
+            }
+        })
+    }
+    
     @objc func handleTapMaximize() {
-        if let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController {
-            mainTabBarController.maximizePlayerDetailView(episode: nil)
-        }
+        let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
+        mainTabBarController?.maximizePlayerDetailView(episode: nil)
+        panGesture.isEnabled = false
     }
     
     static func initFromNib() -> PlayerDetailView {
@@ -218,12 +234,9 @@ class PlayerDetailView: UIView {
     // MARK: - @IBAction
     
     @IBAction func handleDismiss(_ sender: Any) {
-
-        if let mainTabBarController =  UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController {
-            mainTabBarController.minimizePlayerDetailView()
-        } else {
-            print("NOPE")
-        }
+        let mainTabBarController =  UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
+        mainTabBarController?.minimizePlayerDetailView()
+        panGesture.isEnabled = true
     }
     
     @IBAction func handleCurrentTimeSlider(_ sender: Any) {
